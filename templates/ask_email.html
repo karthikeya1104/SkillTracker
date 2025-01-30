@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}   
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Enter Email - SkillTracker</title>
+</head>
+<body>
+    <h1>Enter your Email</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

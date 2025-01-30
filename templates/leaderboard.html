@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - SkillTracker</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/leaderboard.css' %}">
+</head>
+<body>
+
+<header>
+    <h1>Leaderboard</h1>
+</header>
+
+<button class="menu-btn">☰ Menu</button>
+
+<div class="sidebar">
+    <br>
+    <a href="{% url 'home' %}">Home</a>
+    
+    <!-- Sorting options -->
+    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+       Sort by Rating
+    </a>
+    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+       Sort by Problems Solved
+    </a>
+
+    <!-- Platform filter links -->
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}" 
+        {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
+        All Platforms
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
+       LeetCode
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
+       Codeforces
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
+       CodeChef
+    </a>
+</div>
+<nav>
+    <a href="{% url 'home' %}">Home</a>
+    
+    <!-- Sorting options -->
+    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+       Sort by Rating
+    </a>
+    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+       Sort by Problems Solved
+    </a>
+
+    <!-- Platform filter links -->
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}" 
+        {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
+        All Platforms
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
+       LeetCode
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
+       Codeforces
+    </a>
+    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+       {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
+       CodeChef
+    </a>
+</nav>
+
+<div class="container">
+    <h2 class="center">Leaderboard</h2>
+
+    <!-- Display filtered and sorted leaderboard data -->
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Platform</th>
+                <th>Problems Solved</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in leaderboard_data %}
+                <tr>
+                    <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Corrected rank counter -->
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.platform_name }}</td>
+                    <td>
+                        {% if user.problems_solved != -1 %}
+                            {{ user.problems_solved }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.last_rating != -1 %}
+                            {{ user.last_rating }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}">Previous</a>
+        {% endif %}
+    
+        <span class="current-page">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+    
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}">Last &raquo;</a>
+        {% endif %}    
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 SkillTracker. All Rights Reserved.</p>
+</footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const menuBtn = document.querySelector('.menu-btn'); 
+        const sidebar = document.querySelector('.sidebar');
+
+        menuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('show'); 
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+    });
+</script>
+</body>
+</html>

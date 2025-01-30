@@ -1,0 +1,305 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    box-sizing: border-box; /* Includes padding/borders in width/height calculations */
+}
+
+/* Header */
+header {
+    background-color: #007bff; /* Strong blue for header */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Navigation */
+nav {
+    background-color: #333; /* Darker gray for navigation */
+    display: flex;
+    justify-content: center; /* Centers nav items horizontally */
+    align-items: center; /* Centers nav items vertically */
+    flex-wrap: wrap; /* Wraps items for smaller screens */
+    padding: 10px 0; /* Minimal vertical padding */
+    margin: 0 auto; /* Ensures nav is centered */
+    width: 100%; /* Restricts nav to full width of viewport */
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+nav a {
+    color: #EEE; /* Light text for contrast */
+    padding: 8px 15px; /* Compact padding for links */
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+    font-size: 1em;
+    white-space: nowrap; /* Prevents wrapping of text */
+}
+
+nav a:hover {
+    background-color: #555; /* Slightly lighter hover effect */
+}
+
+nav a:not(:last-child) {
+    border-right: 1px solid #444; /* Visible separation between links */
+}
+
+nav a:last-child {
+    border-right: none; /* Remove border for the last link */
+}
+
+/* Container */
+.container {
+    max-width: 800px; /* Restrict content width */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    overflow-x: hidden; /* Prevent horizontal scrolling inside the container */
+    box-sizing: border-box; /* Ensure padding is included */
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="text"],
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Lighter border for better visibility */
+    box-sizing: border-box; /* Includes padding in width calculation */
+}
+
+input:focus,
+button:focus {
+    outline: none;
+    border-color: #007bff; /* Highlighted blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Button Styles */
+form button, 
+button {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+
+/* Error Messages */
+.errors ul {
+    color: red;
+    list-style-type: none;
+    padding: 0;
+}
+
+.errors ul li {
+    margin-bottom: 5px;
+}
+
+/* Center Alignment */
+.center {
+    text-align: center;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #333; /* Dark gray footer */
+    color: #EEE; /* Light gray text */
+    margin-top: auto; /* Pushes footer to the bottom */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Links */
+a,
+button {
+    text-decoration: none;
+    color: #007bff; /* Blue color for links */
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #ffd700; /* Gold color for hover */
+}
+
+/* Specific styles for 'Add Platform Profile' link */
+.container a {
+    color: #007bff; /* Blue color for 'Add Platform Profile' link */
+    font-weight: bold; /* Makes it stand out */
+    padding: 10px 20px;
+    border: 2px solid #007bff; /* Blue border around the link */
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container a:hover {
+    background-color: #007bff; /* Blue background on hover */
+    color: #007bff; /* White text on hover */
+    border: 2px solid #0056b3; /* Darker blue border on hover */
+}
+
+/* Additional styling for links inside .container */
+.container p a {
+    color: #007bff; /* Blue color for links inside .container */
+}
+
+.container p a:hover {
+    color: #0056b3; /* Darker blue color on hover */
+}
+
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message-box {
+    background-color: #d4edda; /* Light green background for messages */
+    color: #155724; /* Dark green text */
+    border: 1px solid #c3e6cb; /* Matching green border */
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Stack items vertically */
+        padding: 5px 0;
+    }
+
+    nav a {
+        flex: 1 1 auto;
+        text-align: center;
+        border-right: none;
+        border-bottom: 1px solid #444;
+        padding: 10px 0;
+    }
+
+    nav a:last-child {
+        border-bottom: none;
+    }
+
+    /* Adjust container padding for small screens */
+    .container {
+        padding: 15px;
+    }
+
+    /* Smaller header text for mobile */
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    button {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 12px;
+    }
+}
+
+/* Leaderboard Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+/* Sort by link styles */
+nav a {
+    color: #007bff;
+    font-weight: normal;
+}
+
+nav a:hover {
+    color: #0056b3;
+}
+
+nav a[style="font-weight: bold;"] {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    color: #000;
+}
+
+.pagination .current-page {
+    font-weight: bold;
+    margin: 0 10px;
+}
