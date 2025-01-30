@@ -21,9 +21,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Security settings
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='your-default-secret-key')
-DEBUG = env.bool('DEBUG', default=True)
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', '192.168.48.74'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1'])
 
 
 # Email settings
