@@ -137,7 +137,9 @@ def add_platform_profile(request):
                 request.session['subscriber_email'] = subscriber.email
                 return redirect('add_platform_profile')
             except Subscriber.DoesNotExist:
-                messages.error(request, "Email not found. Please try again.")
+                # If the email does not exist, give a message to subscribe first and redirect to the home page
+                messages.error(request, "Email does not exist. Please subscribe first.")
+                return redirect('home')  # Redirecting to the home page
         return render(request, 'ask_email.html')
 
     try:

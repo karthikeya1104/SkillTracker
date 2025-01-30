@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home</title>
+    <title>Unsubscribe</title>
     {% load static %}   
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Unsubscribe from Notifications</h1>
-    
-    <p>If you want to unsubscribe from notifications, enter your email address below.</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label for="email">Email Address</label>
-            <input type="email" name="email" id="email" required>
-        </div>
+    <div class="container">
+        <h1>Unsubscribe from Notifications</h1>
+        <p>Enter your email to unsubscribe.</p>
         
-        <button type="submit">Unsubscribe</button>
-    </form>
-    
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-    <a href="{% url 'home' %}">Home</a>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <button type="submit">Unsubscribe</button>
+        </form>
+        
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <a href="{% url 'home' %}">Back to Home</a>
+    </div>
 </body>
 </html>

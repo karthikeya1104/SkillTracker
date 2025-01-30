@@ -82,14 +82,13 @@ nav a:hover {
         display: flex;
         background-color: #007bff;
         color: white;
-        padding: 10px 20px;
+        padding: 10px 0px;
         font-size: 18px;
         border: none;
         cursor: pointer;
         margin: 10px;
-        position: fixed;
+        position: absolute;
         top: 10px;
-        left: 10px;
         z-index: 1000;
     }
 }
@@ -136,7 +135,7 @@ li h4 {
 }
 
 /* Edit Button Styling */
-.edit-btn {
+.link-btn {
     background-color: white;
     color: #007bff;
     border: 2px solid #007bff;
@@ -146,6 +145,7 @@ li h4 {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-top: 3px;
     margin-left: 10px;
 }
 

@@ -16,7 +16,7 @@
 <button class="menu-btn">☰ Menu</button>
 
 <div class="sidebar">
-    <br>
+    <br><br><br>
     <a href="{% url 'home' %}">Home</a>
     
     <!-- Sorting options -->
@@ -143,17 +143,25 @@
     document.addEventListener("DOMContentLoaded", function() {
         const menuBtn = document.querySelector('.menu-btn'); 
         const sidebar = document.querySelector('.sidebar');
-
+    
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('show'); 
+            
+            if (sidebar.classList.contains('show')) {
+                menuBtn.style.backgroundColor = '#333';
+            } else {
+                menuBtn.style.backgroundColor = '#007bff';
+            }
         });
-
+    
         document.addEventListener('click', function(event) {
             if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
                 sidebar.classList.remove('show');
+                menuBtn.style.backgroundColor = '#007bff';
             }
         });
     });
+    
 </script>
 </body>
 </html>
