@@ -275,11 +275,15 @@ def create_or_join_group(request):
         if action == 'create_group':
             # Create a new group
             new_group_name = request.POST.get('group_name')
-
+            
             if subscriber.group:
                 messages.error(request, "You are already part of a group!")
                 return redirect('create_or_join_group')
-
+            
+            if Subscriber.objects.filter(group=new_group_name).exists():
+                messages.error(request, "Group already exist!")
+                return redirect('create_or_join_group')
+            
             subscriber.group = new_group_name
             subscriber.save()
             messages.success(request, f"You have successfully created and joined the group: {new_group_name}")
