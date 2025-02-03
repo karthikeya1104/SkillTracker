@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create or Join Group</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    {% if messages %}
+        <div class="messages">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if subscriber.group %}
+        <h1>You are a member of the group: <strong><br>{{ subscriber.group }}</strong></h1>
+        <br><br>
+        <!-- Leave Group Form -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="leave_group">
+            <button type="submit">Leave Group</button>
+        </form>
+
+    {% else %}
+        <h1>Create or Join a Group</h1>
+
+        <!-- Create Group Form -->
+        <div class="form-group">
+            <h2>Create a New Group</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create_group">
+                <label for="group_name">Group Name:</label>
+                <input type="text" id="group_name" name="group_name" required placeholder="Enter group name"><br><br>
+                <button type="submit">Create Group</button>
+            </form>
+        </div>
+
+        <br>
+
+        <!-- Join Group Form -->
+        <div class="form-group">
+            <h2>Join an Existing Group</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="join_group">
+                <label for="existing_group_name">Enter Group Name:</label>
+                <input type="text" id="existing_group_name" name="existing_group_name" required placeholder="Enter the group name"><br><br>
+                <button type="submit">Join Group</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'home' %}">Back to Home</a>
+
+</div>
+
+</body>
+</html>

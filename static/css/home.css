@@ -90,6 +90,7 @@ nav a:hover {
         position: absolute;
         top: 10px;
         z-index: 1000;
+        transition: background-color 0.3s ease;
     }
 }
 

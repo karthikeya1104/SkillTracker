@@ -18,65 +18,103 @@
 <div class="sidebar">
     <br><br><br>
     <a href="{% url 'home' %}">Home</a>
-    
-    <!-- Sorting options -->
-    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
-       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
-       Sort by Rating
-    </a>
-    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
-       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
-       Sort by Problems Solved
-    </a>
 
+    <!-- Global Leaderboard -->
+    {% if group_filter %}
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if group_filter == None %} style="font-weight: bold;" {% endif %}>
+       Global Leaderboard
+    </a>
+    {% endif %}
+    {% if subscriber.group and not group_filter %}
+    <!-- My Group Leaderboard -->
+    <a href="{% url 'leaderboard' %}?group={{ subscriber.group }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if group_filter == subscriber.group %} style="font-weight: bold;" {% endif %}>
+       My Group Leaderboard
+    </a>
+    {% endif %}
+
+    <!-- Sorting options -->
+    {% if sort_by == "rating" %}
+        <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+        {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+        Sort by Problems Solved
+        </a>
+    {% else %}
+        <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+        {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+        Sort by Rating
+        </a>
+    {% endif %}
+    
     <!-- Platform filter links -->
-    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}" 
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
         {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
         All Platforms
     </a>
-    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
        {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
        LeetCode
     </a>
-    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
        {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
        Codeforces
     </a>
-    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
+    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
        {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
        CodeChef
     </a>
+    
 </div>
 <nav>
     <a href="{% url 'home' %}">Home</a>
-    
+
+    <!-- Global Leaderboard -->
+    {% if group_filter %}
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if group_filter == None %} style="font-weight: bold;" {% endif %}>
+       Global Leaderboard
+    </a>
+    {% endif %}
+    {% if subscriber.group and not group_filter %}
+    <!-- My Group Leaderboard -->
+    <a href="{% url 'leaderboard' %}?group={{ subscriber.group }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
+       {% if group_filter == subscriber.group %} style="font-weight: bold;" {% endif %}>
+       My Group Leaderboard
+    </a>
+    {% endif %}
+
     <!-- Sorting options -->
-    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
-       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
-       Sort by Rating
-    </a>
-    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
-       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
-       Sort by Problems Solved
-    </a>
+    {% if sort_by == "rating" %}
+        <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+        {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+        Sort by Problems Solved
+        </a>
+    {% else %}
+        <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+        {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+        Sort by Rating
+        </a>
+    {% endif %}
 
     <!-- Platform filter links -->
-    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}" 
+    <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
         {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
         All Platforms
     </a>
-    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
-       {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
-       LeetCode
+    <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+    {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
+    LeetCode
     </a>
-    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
-       {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
-       Codeforces
+    <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+    {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
+    Codeforces
     </a>
-    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}" 
-       {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
-       CodeChef
+    <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+    {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
+    CodeChef
     </a>
+
 </nav>
 
 <div class="container">
@@ -95,25 +133,25 @@
         </thead>
         <tbody>
             {% for user in leaderboard_data %}
-                <tr>
-                    <td>{{ page_obj.start_index|add:forloop.counter0 }}</td> <!-- Corrected rank counter -->
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.platform_name }}</td>
-                    <td>
-                        {% if user.problems_solved != -1 %}
-                            {{ user.problems_solved }}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if user.last_rating != -1 %}
-                            {{ user.last_rating }}
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
-                </tr>
+            <tr {% if user.username in subscriber_platforms %} class="highlight-user" {% endif %}>
+                <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.platform_name }}</td>
+                <td>
+                    {% if user.problems_solved != -1 %}
+                        {{ user.problems_solved }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.last_rating != -1 %}
+                        {{ user.last_rating }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

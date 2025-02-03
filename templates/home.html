@@ -24,6 +24,7 @@
         {% if subscriber %}
             <a href="{% url 'leaderboard' %}">Leaderboard</a>
             <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'create_or_join_group' %}">Manage Your Group</a>
         {% endif %}
     </div>
 
@@ -35,6 +36,7 @@
         {% if subscriber %}
             <a href="{% url 'leaderboard' %}">Leaderboard</a>
             <a href="{% url 'logout' %}">Logout</a>
+            <a href="{% url 'create_or_join_group' %}">Manage Your Group</a>
         {% endif %}
     </nav>
 
@@ -104,6 +106,7 @@
                 
                 if (sidebar.classList.contains('show')) {
                     menuBtn.style.backgroundColor = '#333';
+                    
                 } else {
                     menuBtn.style.backgroundColor = '#007bff';
                 }

@@ -3,7 +3,7 @@ from .models import Subscriber, PlatformProfile
 
 @admin.register(Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ('email', 'date_subscribed')
+    list_display = ('email', 'group', 'date_subscribed')
 
 @admin.register(PlatformProfile)
 class PlatformProfileAdmin(admin.ModelAdmin):

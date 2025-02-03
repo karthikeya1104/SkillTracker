@@ -171,8 +171,8 @@ def add_platform_profile(request):
 
 def user_logout(request):
     """Handle user logout."""
-    logout(request)  # This will remove the session data
-    return redirect('home')  # Redirects the user to the home page
+    logout(request)
+    return redirect('home')
 
 def unsubscribe_view(request):
     """Handle the unsubscribe request."""
@@ -207,34 +207,50 @@ def unsubscribe_view(request):
 def leaderboard(request):
     """Display the leaderboard of registered users with options for sorting and filtering by platform."""
     
+    subscriber_email = request.session.get('subscriber_email')
+    
+    if not subscriber_email:
+        return redirect('home')
+    
+    # Get the logged-in subscriber instance
+    subscriber = Subscriber.objects.get(email=subscriber_email)
+    subscriber_platforms = PlatformProfile.objects.filter(subscriber__email=subscriber_email).values_list('username', flat=True)
+
     # Get query parameters for sorting and filtering
-    sort_by = request.GET.get('sort_by', 'rating')  # Default to sorting by rating
-    platform_filter = request.GET.get('platform', None)  # Filter by platform if specified
-    
+    sort_by = request.GET.get('sort_by', 'rating')
+    platform_filter = request.GET.get('platform', None)
+    group_filter = request.GET.get('group', None)
+
     # Fetch leaderboard data from the database (all users)
-    leaderboard_data = PlatformProfile.objects.all()  # Fetch all user profiles from the database
-    
-    # Filter by platform if specified
+    leaderboard_data = PlatformProfile.objects.all()
+
+    # If a group is selected, filter by that group (disregard platform and sorting)
+    if group_filter == subscriber.group:
+        leaderboard_data = leaderboard_data.filter(subscriber__group=subscriber.group)
+        
     if platform_filter:
         leaderboard_data = leaderboard_data.filter(platform_name=platform_filter)
-
+    
     # Sort the leaderboard data by selected criterion (rating or problems solved)
     if sort_by == 'problems_solved':
-        leaderboard_data = leaderboard_data.order_by('-problems_solved')  # Sort by problems solved (descending)
+        leaderboard_data = leaderboard_data.order_by('-problems_solved')
     else:
-        leaderboard_data = leaderboard_data.order_by('-last_rating')  # Default: Sort by rating (descending)
+        leaderboard_data = leaderboard_data.order_by('-last_rating')
 
     # Paginate the leaderboard data (10 entries per page)
     paginator = Paginator(leaderboard_data, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
+    print(subscriber.group)
     # Pass the sorted, filtered, and paginated data to the template
     return render(request, 'leaderboard.html', {
-        'leaderboard_data': page_obj.object_list,  # Paginated data
+        'leaderboard_data': page_obj.object_list,
         'page_obj': page_obj,
         'sort_by': sort_by,
-        'platform_filter': platform_filter
+        'platform_filter': platform_filter,
+        'group_filter': group_filter,
+        'subscriber': subscriber,
+        'subscriber_platforms': subscriber_platforms,
     })
 
 def fetch_leaderboard_data_view(request):
@@ -243,3 +259,60 @@ def fetch_leaderboard_data_view(request):
         return JsonResponse({'status': 'success', 'message': 'Leaderboard data fetched successfully'})
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+
+def create_or_join_group(request):
+    """Allow users to create, join, or leave a group."""
+    subscriber_email = request.session.get('subscriber_email')
+
+    if not subscriber_email:
+        return redirect('home')
+
+    subscriber = Subscriber.objects.get(email=subscriber_email)
+
+    if request.method == "POST":
+        action = request.POST.get('action')
+
+        if action == 'create_group':
+            # Create a new group
+            new_group_name = request.POST.get('group_name')
+
+            if subscriber.group:
+                messages.error(request, "You are already part of a group!")
+                return redirect('create_or_join_group')
+
+            subscriber.group = new_group_name
+            subscriber.save()
+            messages.success(request, f"You have successfully created and joined the group: {new_group_name}")
+            return redirect('home')
+
+        elif action == 'join_group':
+            # Join an existing group
+            group_name = request.POST.get('existing_group_name')
+
+            if not Subscriber.objects.filter(group=group_name).exists():
+                messages.error(request, "Group does not exist!")
+                return redirect('create_or_join_group')
+
+            if subscriber.group:
+                messages.error(request, "You are already part of a group!")
+                return redirect('create_or_join_group')
+
+            subscriber.group = group_name
+            subscriber.save()
+            messages.success(request, f"You have successfully joined the group: {group_name}")
+            return redirect('home')
+
+        elif action == 'leave_group':
+            # Leave the current group
+            if subscriber.group:
+                messages.success(request, f"You have left the group: {subscriber.group}")
+                subscriber.group = None
+                subscriber.save()
+            else:
+                messages.error(request, "You are not in any group!")
+            
+            return redirect('create_or_join_group')
+
+    return render(request, 'create_or_join_group.html', {
+        'subscriber': subscriber,
+    })
