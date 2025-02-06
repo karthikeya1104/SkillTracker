@@ -52,7 +52,7 @@
             {% for platform in platforms %}
             <li>
                 <h4>{{ platform.platform_name }} : {{ platform.username }}</h4>
-                <a href="{% url 'update-platform-username' platform.id %}" class="link-btn">Edit</a>
+                <a href="{% url 'update-platform-username' platform.platform_name platform.username %}" class="link-btn">Edit</a>
             </li>
             {% endfor %}
         </ul>

@@ -68,18 +68,17 @@ def send_daily_report(request):
     
     return redirect('home')  # Redirect back to the home page after sending the email
 
-
-def update_platform_username(request, platform_id):
-    """Edit the username for a specific platform."""
-    platform = get_object_or_404(PlatformProfile, id=platform_id)
-
-    # Check if the logged-in subscriber owns this platform
+def update_platform_username(request, platform_name, username):
     email = request.session.get('subscriber_email')
-    if not email or platform.subscriber.email != email:
+    if not email:
         return redirect('home')
 
+    # Fetch the correct platform profile by matching platform_name, username, and subscriber
+    platform = get_object_or_404(
+        PlatformProfile, platform_name=platform_name, username=username, subscriber__email=email
+    )
+
     if request.method == 'POST':
-        # Use a simple form to edit only the username
         platform_form = PlatformProfileForm(request.POST, instance=platform)
         if platform_form.is_valid():
             platform_form.save()
@@ -225,7 +224,7 @@ def leaderboard(request):
     leaderboard_data = PlatformProfile.objects.all()
 
     # If a group is selected, filter by that group (disregard platform and sorting)
-    if group_filter == subscriber.group:
+    if subscriber.group and group_filter == subscriber.group:
         leaderboard_data = leaderboard_data.filter(subscriber__group=subscriber.group)
         
     if platform_filter:
@@ -241,7 +240,6 @@ def leaderboard(request):
     paginator = Paginator(leaderboard_data, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(subscriber.group)
     # Pass the sorted, filtered, and paginated data to the template
     return render(request, 'leaderboard.html', {
         'leaderboard_data': page_obj.object_list,

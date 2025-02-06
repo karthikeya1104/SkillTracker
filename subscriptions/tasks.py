@@ -125,7 +125,7 @@ def fetch_leetcode_data(username):
         #print(problems_solved, rating, contests_attended)
         return {
             'problems_solved': problems_solved,
-            'rating': rating,
+            'rating': int(rating) if rating != 'N/A' else rating,
             'contests': contests_attended
         }
 
@@ -201,8 +201,6 @@ def fetch_codeforces_data(username):
             'contests': 'N/A'
         }
 
-
-
 def fetch_codechef_data(username):
     """Fetch data from CodeChef by scraping."""
     url = f"https://www.codechef.com/users/{username}"
@@ -253,7 +251,7 @@ def send_report_email(subscriber):
     email_subject = 'Your Daily Coding Activity Report'
     email_body = f"""
     <html>
-    <body>
+    <body color="#333">
         <p>Hello {subscriber.email},</p>
         <p>Here is your activity report:</p>
         <ul>
