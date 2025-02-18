@@ -301,7 +301,7 @@ def send_report_email(subscriber):
 
     email_body += f"""
         </ul>
-        <p>Best Regards,<br>Your Subscription Service</p>
+        <p>Best Regards,<br>SkillTracker</p>
     </body>
     </html>
     """
