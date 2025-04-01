@@ -104,18 +104,11 @@
             menuBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('show'); 
                 
-                if (sidebar.classList.contains('show')) {
-                    menuBtn.style.backgroundColor = '#333';
-                    
-                } else {
-                    menuBtn.style.backgroundColor = '#007bff';
-                }
             });
         
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
                     sidebar.classList.remove('show');
-                    menuBtn.style.backgroundColor = '#007bff';
                 }
             });
         });

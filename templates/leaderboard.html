@@ -13,13 +13,13 @@
     <h1>Leaderboard</h1>
 </header>
 
+<!-- Menu Button (visible only on mobile) -->
 <button class="menu-btn">☰ Menu</button>
 
+<!-- Sidebar (only shown in mobile view when triggered) -->
 <div class="sidebar">
     <br><br><br>
     <a href="{% url 'home' %}">Home</a>
-
-    <!-- Global Leaderboard -->
     {% if group_filter %}
     <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
        {% if group_filter == None %} style="font-weight: bold;" {% endif %}>
@@ -27,30 +27,27 @@
     </a>
     {% endif %}
     {% if subscriber.group and not group_filter %}
-    <!-- My Group Leaderboard -->
     <a href="{% url 'leaderboard' %}?group={{ subscriber.group }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
        {% if group_filter == subscriber.group %} style="font-weight: bold;" {% endif %}>
        My Group Leaderboard
     </a>
     {% endif %}
 
-    <!-- Sorting options -->
     {% if sort_by == "rating" %}
-        <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
-        Sort by Problems Solved
-        </a>
+    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+       Sort by Problems Solved
+    </a>
     {% else %}
-        <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
-        Sort by Rating
-        </a>
+    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+       Sort by Rating
+    </a>
     {% endif %}
     
-    <!-- Platform filter links -->
     <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
-        All Platforms
+       {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
+       All Platforms
     </a>
     <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
        {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
@@ -64,12 +61,11 @@
        {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
        CodeChef
     </a>
-    
 </div>
+
+<!-- Main Navigation for larger screens -->
 <nav>
     <a href="{% url 'home' %}">Home</a>
-
-    <!-- Global Leaderboard -->
     {% if group_filter %}
     <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
        {% if group_filter == None %} style="font-weight: bold;" {% endif %}>
@@ -77,84 +73,82 @@
     </a>
     {% endif %}
     {% if subscriber.group and not group_filter %}
-    <!-- My Group Leaderboard -->
     <a href="{% url 'leaderboard' %}?group={{ subscriber.group }}{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if platform_filter %}&platform={{ platform_filter }}{% endif %}" 
        {% if group_filter == subscriber.group %} style="font-weight: bold;" {% endif %}>
        My Group Leaderboard
     </a>
     {% endif %}
-
-    <!-- Sorting options -->
     {% if sort_by == "rating" %}
-        <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
-        Sort by Problems Solved
-        </a>
+    <a href="{% url 'leaderboard' %}?sort_by=problems_solved{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+       {% if sort_by == 'problems_solved' %} style="font-weight: bold;" {% endif %}>
+       Sort by Problems Solved
+    </a>
     {% else %}
-        <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
-        Sort by Rating
-        </a>
+    <a href="{% url 'leaderboard' %}?sort_by=rating{% if platform_filter %}&platform={{ platform_filter }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
+       {% if sort_by == 'rating' %} style="font-weight: bold;" {% endif %}>
+       Sort by Rating
+    </a>
     {% endif %}
-
-    <!-- Platform filter links -->
+    
     <a href="{% url 'leaderboard' %}{% if sort_by %}?sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-        {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
-        All Platforms
+       {% if platform_filter == None %} style="font-weight: bold;" {% endif %}>
+       All Platforms
     </a>
     <a href="{% url 'leaderboard' %}?platform=LeetCode{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-    {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
-    LeetCode
+       {% if platform_filter == 'LeetCode' %} style="font-weight: bold;" {% endif %}>
+       LeetCode
     </a>
     <a href="{% url 'leaderboard' %}?platform=Codeforces{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-    {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
-    Codeforces
+       {% if platform_filter == 'Codeforces' %} style="font-weight: bold;" {% endif %}>
+       Codeforces
     </a>
     <a href="{% url 'leaderboard' %}?platform=CodeChef{% if sort_by %}&sort_by={{ sort_by }}{% endif %}{% if group_filter %}&group={{ group_filter }}{% endif %}" 
-    {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
-    CodeChef
+       {% if platform_filter == 'CodeChef' %} style="font-weight: bold;" {% endif %}>
+       CodeChef
     </a>
-
 </nav>
 
+<!-- Content Goes Here -->
 <div class="container">
-    <h2 class="center">Leaderboard</h2>
+    <center><h2>Leaderboard</h2></center>
 
-    <!-- Display filtered and sorted leaderboard data -->
-    <table>
-        <thead>
-            <tr>
-                <th>Rank</th>
-                <th>User</th>
-                <th>Platform</th>
-                <th>Problems Solved</th>
-                <th>Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in leaderboard_data %}
-            <tr {% if user.username in subscriber_platforms %} class="highlight-user" {% endif %}>
-                <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.platform_name }}</td>
-                <td>
-                    {% if user.problems_solved != -1 %}
-                        {{ user.problems_solved }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>
-                    {% if user.last_rating != -1 %}
-                        {{ user.last_rating }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Table Wrapper with horizontal scroll -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Platform</th>
+                    <th>Problems Solved</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in leaderboard_data %}
+                <tr {% if user.username in subscriber_platforms %} class = "highlight-user" {% endif %}>
+                    <td>{{ page_obj.start_index|add:forloop.counter0 }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.platform_name }}</td>
+                    <td>
+                        {% if user.problems_solved != -1 %}
+                            {{ user.problems_solved }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.last_rating != -1 %}
+                            {{ user.last_rating }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Controls -->
     <div class="pagination">
@@ -175,8 +169,9 @@
 </div>
 
 <footer>
-    <p>&copy; 2025 SkillTracker. All Rights Reserved.</p>
+    <p>&copy; 2025 SkillTracker. All rights reserved.</p>
 </footer>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const menuBtn = document.querySelector('.menu-btn'); 
@@ -184,22 +179,15 @@
     
         menuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('show'); 
-            
-            if (sidebar.classList.contains('show')) {
-                menuBtn.style.backgroundColor = '#333';
-            } else {
-                menuBtn.style.backgroundColor = '#007bff';
-            }
         });
     
         document.addEventListener('click', function(event) {
             if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
                 sidebar.classList.remove('show');
-                menuBtn.style.backgroundColor = '#007bff';
             }
         });
-    });
-    
+    });  
 </script>
+
 </body>
 </html>
