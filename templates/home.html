@@ -67,8 +67,8 @@
         {% endif %}
     
         {% else %}
-        <p class="center">You are not subscribed yet. <a  class="link-btn" href="{% url 'subscribe' %}">Subscribe</a> to start.</p>
-    
+        <p class="center">You are not subscribed yet.</p>
+        <p class="center"><a  class="link-btn" href="{% url 'subscribe' %}">Subscribe Here</a></p>
         <h3 class="center">Already subscribed?</h3>
         <form method="POST" action="{% url 'home' %}" class="center">
             {% csrf_token %}
