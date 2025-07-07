@@ -12,4 +12,5 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('trigger-leaderboard/', views.fetch_leaderboard_data_view, name='trigger-leaderboard'),
     path('create_or_join_group/', views.create_or_join_group, name='create_or_join_group'),
+    path('api/fetch-data', views.api_fetch_data_view, name='api_fetch_data'),
 ]

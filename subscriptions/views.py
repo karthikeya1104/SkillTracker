@@ -318,3 +318,54 @@ def create_or_join_group(request):
     return render(request, 'create_or_join_group.html', {
         'subscriber': subscriber,
     })
+
+
+def api_fetch_data_view(request):
+    """API view to return stats for given usernames on each platform."""
+    platforms = {
+        'leetcode': 'LeetCode',
+        'codechef': 'CodeChef',
+        'codeforces': 'Codeforces',
+    }
+
+    result = {}
+
+    for param, platform_name in platforms.items():
+        username = request.GET.get(param)
+        if not username:
+            result[param] = {
+                'problems_solved': 'No username provided',
+                'rating': 'N/A',
+                'contests': 'N/A'
+            }
+            continue
+
+        try:
+            profile = (
+                PlatformProfile.objects
+                .filter(platform_name__iexact=platform_name, username=username)
+                .order_by('-id')
+                .first()
+            )
+
+            if profile:
+                result[param] = {
+                    'problems_solved': profile.problems_solved,
+                    'rating': profile.last_rating,
+                    'contests': profile.contests_attended
+                }
+            else:
+                result[param] = {
+                    'problems_solved': 'User not found',
+                    'rating': 'N/A',
+                    'contests': 'N/A'
+                }
+
+        except Exception as e:
+            result[param] = {
+                'problems_solved': 'Error',
+                'rating': str(e),
+                'contests': 'N/A'
+            }
+
+    return JsonResponse(result)
