@@ -204,8 +204,16 @@ def fetch_codeforces_data(username):
 def fetch_codechef_data(username):
     """Fetch data from CodeChef by scraping."""
     url = f"https://www.codechef.com/users/{username}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                      "AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/114.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.google.com"
+    }
+    
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
 
         if response.url == "https://www.codechef.com/":
