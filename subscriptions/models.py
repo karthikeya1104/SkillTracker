@@ -37,8 +37,21 @@ class PlatformProfile(models.Model):
     
     updated_at = models.DateTimeField(auto_now=True)
 
+
+class WeeklySnapshot(models.Model):
+    """Store a weekly snapshot of a profile's statistics."""
+    profile = models.ForeignKey(
+        PlatformProfile,
+        on_delete=models.CASCADE,
+        related_name='snapshots'
+    )
+    timestamp = models.DateTimeField(auto_now_add=True)
+    last_rating = models.IntegerField(null=True, blank=True, default=None)
+    problems_solved = models.IntegerField(null=True, blank=True, default=None)
+    contests_attended = models.IntegerField(null=True, blank=True, default=None)
+
     class Meta:
-        unique_together = ('subscriber', 'platform_name')
+        ordering = ['-timestamp']
 
     def __str__(self):
-        return f"{self.subscriber.email} - {self.platform_name} ({self.username})"
+        return f"Snapshot for {self.profile.subscriber.email} on {self.profile.platform_name} at {self.timestamp}"

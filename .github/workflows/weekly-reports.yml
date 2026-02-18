@@ -1,0 +1,60 @@
+name: Weekly Reports - Monday Morning
+
+# Runs every Monday at 9:00 AM UTC
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday at 09:00 UTC
+  
+  # Allow manual trigger from Actions tab
+  workflow_dispatch:
+
+jobs:
+  send-weekly-reports:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Send weekly reports
+        env:
+          API_URL: ${{ secrets.SKILLTRACKER_API_URL }}
+          API_SECRET: ${{ secrets.SKILLTRACKER_API_SECRET }}
+        run: |
+          echo "Starting weekly reports trigger..."
+          echo "Target API: $API_URL/api/weekly-update/"
+          
+          # Call the weekly-update endpoint
+          response=$(curl -X POST \
+            "$API_URL/api/weekly-update/" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $API_SECRET" \
+            -w "\n%{http_code}" \
+            -s)
+          
+          # Extract status code and body
+          http_code=$(echo "$response" | tail -n 1)
+          body=$(echo "$response" | head -n -1)
+          
+          echo "HTTP Status Code: $http_code"
+          echo "Response: $body"
+          
+          # Check if request was successful (2xx status)
+          if [[ $http_code -ge 200 && $http_code -lt 300 ]]; then
+            echo "✅ Weekly reports triggered successfully!"
+            exit 0
+          else
+            echo "❌ Failed to trigger weekly reports (HTTP $http_code)"
+            exit 1
+          fi
+      
+      - name: Log success
+        if: success()
+        run: |
+          echo "Weekly reports sent at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+      
+      - name: Log failure
+        if: failure()
+        run: |
+          echo "⚠️ Weekly reports trigger failed!"
+          echo "Check the API endpoint and GitHub secrets configuration."

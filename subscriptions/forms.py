@@ -89,30 +89,40 @@ class PlatformProfileForm(forms.ModelForm):
             self.fields['platform_name'].disabled = True
 
     def clean_username(self):
-        # Get the platform name from the instance if updating, or from cleaned_data if adding
         platform_name = self.instance.platform_name if self.instance.pk else self.cleaned_data.get('platform_name')
         username = self.cleaned_data.get('username')
 
-        # Map platform to validation and fetching functions
+        # Fast check 1: if updating (instance has pk), no need to check existence again
+        if self.instance.pk:
+            # Already validated during creation; skip remote validation for updates
+            return username
+
+        # Fast check 2: check if this (subscriber, platform_name, username) combo already exists
+        # This avoids expensive API calls if the profile is already registered
+        if self.instance.subscriber_id:
+            if PlatformProfile.objects.filter(
+                subscriber_id=self.instance.subscriber_id,
+                platform_name=platform_name,
+                username=username
+            ).exists():
+                raise ValidationError(f"Profile for {platform_name} ({username}) already exists.")
+
+        # Only perform remote validation if not found locally
         platform_validators = {
             'LeetCode': (validate_leetcode_username, fetch_leetcode_data),
             'Codeforces': (validate_codeforces_username, fetch_codeforces_data),
             'CodeChef': (validate_codechef_username, fetch_codechef_data),
         }
 
-        # Ensure the platform has a validator and fetcher
         if platform_name in platform_validators:
-            # Validate the username
-            platform_validators[platform_name][0](username)  # Raises ValidationError if invalid
-            
+            # Validate the username via remote API
+            platform_validators[platform_name][0](username)
             # Fetch additional data
             fetched_data = platform_validators[platform_name][1](username)
-            
             # Update instance fields with fetched data
             rating = fetched_data.get("rating")
             problems_solved = fetched_data.get("problems_solved")
             contests_attended = fetched_data.get("contests")
-
             self.instance.last_rating = -1 if rating == 'N/A' else rating
             self.instance.problems_solved = -1 if problems_solved == 'N/A' else problems_solved
             self.instance.contests_attended = -1 if contests_attended == 'N/A' else contests_attended
@@ -133,22 +143,32 @@ class SubscriberProfileForm(forms.ModelForm):
         platform_name = cleaned_data.get('platform_name')
         username = cleaned_data.get('username')
 
-        if platform_name and username:
-            # Map platform to validation and fetching functions
-            platform_validators = {
-                'LeetCode': (validate_leetcode_username, fetch_leetcode_data),
-                'Codeforces': (validate_codeforces_username, fetch_codeforces_data),
-                'CodeChef': (validate_codechef_username, fetch_codechef_data),
-            }
+        if not (platform_name and username):
+            if platform_name or username:
+                raise forms.ValidationError("Both platform and username are required if either is provided.")
+            return cleaned_data
 
-            if platform_name in platform_validators:
-                # Validate username
-                platform_validators[platform_name][0](username)  # Raises ValidationError if invalid
-                # Fetch data (if needed in the view)
-                self.fetched_data = platform_validators[platform_name][1](username)
-            else:
-                raise forms.ValidationError("Invalid platform selected.")
-        elif platform_name or username:
-            raise forms.ValidationError("Both platform and username are required if either is provided.")
+        # Fast check: before remote validation, check if profile already exists in DB
+        # This avoids expensive API calls if the profile is already registered
+        if PlatformProfile.objects.filter(
+            platform_name=platform_name,
+            username=username
+        ).exists():
+            raise forms.ValidationError(f"Profile for {platform_name} ({username}) already exists on SkillTracker.")
+
+        # Only validate remotely if it's not already in DB
+        platform_validators = {
+            'LeetCode': (validate_leetcode_username, fetch_leetcode_data),
+            'Codeforces': (validate_codeforces_username, fetch_codeforces_data),
+            'CodeChef': (validate_codechef_username, fetch_codechef_data),
+        }
+
+        if platform_name in platform_validators:
+            # Remote validation only if not already registered
+            platform_validators[platform_name][0](username)
+            # Fetch data (if needed in the view)
+            self.fetched_data = platform_validators[platform_name][1](username)
+        else:
+            raise forms.ValidationError("Invalid platform selected.")
 
         return cleaned_data
