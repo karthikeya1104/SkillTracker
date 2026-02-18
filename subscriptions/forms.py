@@ -48,16 +48,27 @@ def validate_codeforces_username(value):
 
 def validate_codechef_username(value):
     url = f"https://www.codechef.com/users/{value}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Connection": "keep-alive",
+    }
+
     try:
-        response = requests.get(url, allow_redirects=True, timeout=5)
-        
-        if response.url == "https://www.codechef.com/":
+        response = requests.get(url, headers=headers, timeout=10)
+
+        if response.status_code == 404:
             raise ValidationError(f"CodeChef username {value} does not exist.")
-        
-        if response.status_code != 200:
-            raise ValidationError(f"Failed to retrieve CodeChef user {value} profile.")
+
+        if response.status_code == 403:
+            raise ValidationError("CodeChef blocked the request (anti-bot protection). Try again later.")
+
     except requests.exceptions.RequestException as e:
-        raise ValidationError(f"Failed to reach CodeChef. Error: {str(e)}")
+        raise ValidationError(f"Failed to reach CodeChef: {str(e)}")
+
     return value
 
 class PlatformProfileForm(forms.ModelForm):
